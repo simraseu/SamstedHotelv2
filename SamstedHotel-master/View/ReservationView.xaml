@@ -1,0 +1,97 @@
+﻿<Window x:Class="SamstedHotel.View.ReservationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SamstedHotel.View"
+        xmlns:viewModel="clr-namespace:SamstedHotel.ViewModel"
+        Title="Reservation" Height="600" Width="800">
+    <Grid>
+        <TabControl>
+            <!-- Tab for Customer Selection and Reservation Booking -->
+            <TabItem Header="Booking">
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <!-- Customer Selection -->
+                    <TextBlock Text="Vælg Kunde:" Margin="0,5"/>
+                    <ComboBox ItemsSource="{Binding Customers}" 
+                              DisplayMemberPath="FirstName" 
+                              SelectedItem="{Binding SelectedCustomer}" 
+                              Width="300" Margin="0,5" 
+                              IsEnabled="True"/>
+
+                    <Button Content="Tilføj Kunde" Command="{Binding AddCustomerCommand}" Width="150" Margin="0,5" />
+
+                    <!-- Date Range Selection -->
+                    <TextBlock Text="Vælg datoer:" Margin="10,5"/>
+                    <StackPanel Orientation="Horizontal">
+                        <DatePicker SelectedDate="{Binding StartDate}" Width="150" Margin="5"/>
+                        <DatePicker SelectedDate="{Binding EndDate}" Width="150" Margin="5"/>
+                    </StackPanel>
+
+                    <!-- Available Rooms Selection -->
+                    <TextBlock Text="Vælg Værelser:" Margin="10,10,0,0" />
+                    <ListBox ItemsSource="{Binding AvailableRooms}" 
+                             SelectedItem="{Binding SelectedRoom}" 
+                             Height="100" Margin="0,5">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <!-- Display the Room Name and Room Type Name -->
+                                    <CheckBox Content="{Binding Item.RoomName}" 
+                                              IsChecked="{Binding IsSelected}" />
+                                    <TextBlock Text="{Binding Item.RoomTypeName}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!-- Available Course Rooms Selection -->
+                    <TextBlock Text="Vælg Kursuslokaler:" Margin="10,10,0,0" />
+                    <ListBox ItemsSource="{Binding AvailableCourseRooms}" 
+                             SelectedItem="{Binding SelectedCourseRoom}" 
+                             Height="150" Margin="0,5">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <CheckBox Content="{Binding Item.CourseRoomName}" 
+                                              IsChecked="{Binding IsSelected}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!-- Book Reservation Button -->
+                    <Button Content="Book Reservation" Command="{Binding BookReservationCommand}" Width="150" Margin="10"/>
+                </StackPanel>
+            </TabItem>
+
+            <!-- Tab for Reservation Management -->
+            <TabItem Header="Reservation Management">
+                <Grid Margin="10">
+                    <!-- Define Rows for DataGrid and Buttons -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <!-- DataGrid takes most space -->
+                        <RowDefinition Height="Auto" />
+                        <!-- Buttons -->
+                    </Grid.RowDefinitions>
+
+                    <!-- DataGrid to Show Reservations -->
+                    <DataGrid ItemsSource="{Binding Reservations}" 
+                              AutoGenerateColumns="True" 
+                              CanUserAddRows="False" 
+                              CanUserDeleteRows="False" 
+                              SelectedItem="{Binding SelectedReservation}" 
+                              Grid.Row="0" />
+
+                    <!-- Buttons at the Bottom -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="10">
+                        <!-- Delete Reservation Button -->
+                        <Button Content="Slet reservation" Command="{Binding DeleteReservationCommand}" Width="150" Margin="5" />
+
+                        <!-- Save Reservations Button -->
+                        <Button Content="Gem reservationer" Command="{Binding SaveToCsvCommand}" Width="150" Margin="5" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
