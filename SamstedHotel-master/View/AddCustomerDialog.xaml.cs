@@ -45,6 +45,8 @@ namespace SamstedHotel.View
                 };
 
                 _customerRepo.Add(newCustomer);
+                MessageBox.Show($"Kunde {FirstName} {LastName} er blevet oprettet.", "Succes",
+                       MessageBoxButton.OK, MessageBoxImage.Information);
                 DialogResult = true;
             }
             catch (SqlException ex)
